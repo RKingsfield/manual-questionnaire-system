@@ -1,0 +1,149 @@
+openapi: 3.0.3
+info:
+  title: Medical Questionnaire API
+  description: |-
+    An API for returning a questionnaire as responses to the questionnaire
+  version: 0.0.1
+servers:
+  - url: localhost
+paths:
+  /questionnaires:
+    get:
+      tags:
+        - Questionnaire
+      summary: Get a list of all questionnaires
+      description: Get a list of all questionnaires
+      operationId: getQuestionnaires
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Questionnaire"
+        "500":
+          description: Internal error
+  /questionnaire/{slug}:
+    get:
+      tags:
+        - Questionnaire
+      summary: Get a specific questionnaire by slug
+      description: Get a specific questionnaire by slug
+      operationId: getQuestionnaire
+      parameters:
+        - in: path
+          required: true
+          name: slug
+          schema:
+            type: string
+          description: The slug for the specified questionnaire
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Questionnaire"
+        "404":
+          description: Questionnaire could not be found
+        "500":
+          description: Internal error
+  /questionnaire/{slug}/submission:
+    post:
+      tags:
+        - Questionnaire
+      summary: Submit a new submission to a questionnaire by slug
+      description: Submit a new submission to a questionnaire by slug
+      operationId: postQuestionnaire
+      parameters:
+        - in: path
+          required: true
+          name: slug
+          schema:
+            type: string
+          description: The slug for the specified questionnaire
+      requestBody:
+        $ref: "#/components/requestBodies/CompletedQuestionnaire"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Recommendation"
+        "404":
+          description: Questionnaire could not be found
+        "422":
+          description: Validation error on submission
+        "500":
+          description: Internal error
+components:
+  schemas:
+    Answer:
+      type: object
+      properties:
+        id:
+          type: number
+        text:
+          type: string
+        order:
+          type: number
+      required: ["id", "text", "order"]
+    Question:
+      type: object
+      properties:
+        id:
+          type: number
+        text:
+          type: string
+        answers_required_for_display:
+          type: array
+          items:
+            type: number
+        answers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Answer"
+        order:
+          type: number
+      required:
+        ["id", "text", "answers_required_for_display", "answers", "order"]
+    Questionnaire:
+      type: object
+      properties:
+        id:
+          type: number
+        slug:
+          type: string
+        description:
+          type: string
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+      required: ["id", "slug", "description"]
+    Recommendation:
+      type: object
+      properties:
+        id:
+          type: number
+        display_name:
+          type: string
+  requestBodies:
+    CompletedQuestionnaire:
+      description: A submission for a questionnaire
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                question_id:
+                  type: number
+                answer_id:
+                  type: number

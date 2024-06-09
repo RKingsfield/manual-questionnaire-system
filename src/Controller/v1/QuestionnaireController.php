@@ -5,7 +5,6 @@ namespace App\Controller\v1;
 use App\Entity\Questionnaire;
 use App\Repository\QuestionnaireRepository;
 use App\Service\QuestionnaireService;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,13 +18,11 @@ class QuestionnaireController extends AbstractController
 {
     private QuestionnaireRepository $questionnaireRepository;
     private SerializerInterface $serializer;
-    private LoggerInterface $logger;
 
-    public function __construct(QuestionnaireRepository $questionnaireRepository, SerializerInterface $serializer, LoggerInterface $logger)
+    public function __construct(QuestionnaireRepository $questionnaireRepository, SerializerInterface $serializer)
     {
         $this->questionnaireRepository = $questionnaireRepository;
         $this->serializer = $serializer;
-        $this->logger = $logger;
     }
 
     #[Route('/v1/questionnaires', name: 'get_questionnaires', methods: ['GET'], format: 'json')]

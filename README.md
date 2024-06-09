@@ -56,8 +56,6 @@ The data models possibly need a refactor. I wanted to prioritise completing know
 - There could be a future need for more complex routing behaviour through the survey, rather than simply showing or hiding questions based on previous answers given. 
   - Depending on the long-term vision for what this project could be and how many users it might have, a scripting engine might be necessary to get really complex flows working.
 
-The Data Fixtures could be broken out into a separate files for a more manageable structure.
-
 ### Validation
 - I'd like to make use of Symfony's built-in validation mechanisms by setting up some DTO models for use when decoding the request body for the submission. 
   - Ultimately I thought it was faster to do the validation quick and dirty manually, with tests to verify the behaviour. Short term tech-debt with a view of paying that back later.

@@ -2,7 +2,6 @@
 
 namespace App\Test\Controller\v1;
 
-use App\Repository\QuestionnaireRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class QuestionnaireControllerTest extends WebTestCase
